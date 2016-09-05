@@ -3,9 +3,28 @@
     <meta charset="UTF-8">
     <title>Sproul Town</title>
     <link rel="stylesheet" type="text/css" href="./css/target.css">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
   </head>
   <body>
-    <canvas id="range"></canvas>
+    <div class="row">
+      <div class="col s2">
+        <h6 id="time">Time</h6><br>
+        <h6 id="score">Score</h6>
+        <form action="#" method="displayTime()">
+          <p class="range-field">
+            <input type="range" id="test5" min="0" max="100" />
+          </p>
+        </form>
+        <a class="waves-effect waves-light btn" id="start">start</a>
+      </div>
+      <div class="col s10">
+        <canvas id="range"></canvas>
+      </div>
+    </div>
   </body>
   <script>
     require('./js/target');

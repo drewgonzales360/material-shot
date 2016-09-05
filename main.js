@@ -26,10 +26,10 @@ let backgroundProcess
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 850,
-    height: 650,
+    width: 800,
+    height: 600,
     center: true,
-    // resizable: false
+    resizable: false,
     // fullscreen: true,
     frame: false
     })

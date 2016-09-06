@@ -16,7 +16,7 @@ const electron = require('electron')
 // Module to create native browser window.
 const app             = electron.app
 const BrowserWindow   = electron.BrowserWindow
-const ipc             = electron.ipcMain;
+const ipcMain         = electron.ipcMain;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -29,13 +29,13 @@ function createWindow () {
     width: 800,
     height: 600,
     center: true,
-    resizable: false,
+    // resizable: false,
     // fullscreen: true,
     frame: false
     })
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/app/target.html`)
+  mainWindow.loadURL(`file://${__dirname}/app/menu.html`)
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
@@ -78,3 +78,47 @@ summary
   In this file you can include the rest of your app's specific main process
   code. You can also put them in separate files and require them here.
 ****************************************************************/
+var shrinkFactor    = 150;
+var targetSpawnRate = 2000;
+ipcMain.on('game-settings', function(event, difficulty, type){
+    console.log("Difficult: " + difficulty + ", Type: " + type);
+    switch (difficulty) {
+        case "easy":
+            shrinkFactor    = 150;
+            targetSpawnRate = 2000;
+            break;
+        case "medium":
+            shrinkFactor    = 100;
+            targetSpawnRate = 1000;
+            break;
+        case "hard":
+            shrinkFactor    = 75;
+            targetSpawnRate = 750;
+            break;
+        case "harder":
+            shrinkFactor    = 50;
+            targetSpawnRate = 300;
+            break;
+        default:
+            shrinkFactor = 150;
+            targetSpawnRate = 2000;
+    }
+    
+    switch (type) {
+        case "accuracy":
+            shrinkFactor    = shrinkFactor / 2;
+            break;
+        case "reflex":
+            shrinkFactor    = shrinkFactor * 2;
+            break;
+        default:
+    }
+})
+
+ipcMain.on('get-difficulty', function(event){
+    event.returnValue = { shrinkFactor: shrinkFactor, targetSpawnRate: targetSpawnRate};
+})
+
+ipcMain.on('quit', function(event){
+    app.quit();
+})

@@ -1,21 +1,32 @@
+/****************************************************************
+FileName: menu.js
+Kenneth Drew Gonzales
+Material Shot
+
+Description:
+The menu will allow a user to pick the difficulty they want
+to play the game at. Four levels of difficulty and two game
+types.
+
+Accuracy will test a users ability to hit a target with precision,
+where the reflex type will test a users ability to quickly hit
+larger targets.
+
+Last Edited: 9/6/16
+****************************************************************/
 const ipcRenderer = require('electron').ipcRenderer
 
-
-document.getElementById('start').addEventListener('click', function(){
-    getHard();
-    window.location.href = `file://${__dirname}/../target.html`
-    
-});
-
-document.getElementById('end').addEventListener('click', function(){
-    ipcRenderer.send('quit');
-})
-
+/****************************************************************
+getHard
+  summary: goes through the radio buttons on the UI and
+  retrieves users settings for the game. Then sends the
+  settings to the main process.
+****************************************************************/
 function getHard() {
     var diffRadio = document.getElementsByName('group1');
-    let difficulty = "easy"; // default difficulty. 
+    let difficulty = "easy"; // default difficulty.
     var typeRadio = document.getElementsByName('game-type');
-    let gameType = "easy"; // default gameType. 
+    let gameType = "easy"; // default gameType.
     for (var i = 0, length = diffRadio.length; i < length; i++) {
         if (diffRadio[i].checked) {
             difficulty = diffRadio[i].value;
@@ -36,3 +47,12 @@ function getHard() {
     }
     ipcRenderer.send('game-settings', difficulty, gameType);
 }
+
+document.getElementById('start').addEventListener('click', function(){
+  getHard();
+  window.location.href = `file://${__dirname}/../target.html`
+});
+
+document.getElementById('end').addEventListener('click', function(){
+  ipcRenderer.send('quit');
+})

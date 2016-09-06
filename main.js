@@ -7,7 +7,7 @@ This is a videogame using a tile sized map
 and you play one character that moves through the map. The
 player is always shown in the center of the screen.
 
-Last Edited: 8/29/16
+Last Edited: 9/6/16
 ****************************************************************/
 
 // Module to control application life.
@@ -80,43 +80,53 @@ summary
 ****************************************************************/
 var shrinkFactor    = 150;
 var targetSpawnRate = 2000;
+var radius          = 100;
 ipcMain.on('game-settings', function(event, difficulty, type){
-    console.log("Difficult: " + difficulty + ", Type: " + type);
+    console.log("Difficult: " + difficulty + ", Type: " + type + "Radius: " + radius);
     switch (difficulty) {
         case "easy":
             shrinkFactor    = 150;
             targetSpawnRate = 2000;
+            radius          = 100;
             break;
         case "medium":
             shrinkFactor    = 100;
             targetSpawnRate = 1000;
+            radius          = 80
             break;
         case "hard":
             shrinkFactor    = 75;
             targetSpawnRate = 750;
+            radius          = 70;
             break;
         case "harder":
             shrinkFactor    = 50;
             targetSpawnRate = 300;
+            radius          = 50;
             break;
         default:
             shrinkFactor = 150;
             targetSpawnRate = 2000;
     }
-    
+
     switch (type) {
         case "accuracy":
-            shrinkFactor    = shrinkFactor / 2;
+            shrinkFactor    = shrinkFactor * 2;
+            radius          = radius / 2;
             break;
         case "reflex":
-            shrinkFactor    = shrinkFactor * 2;
+            shrinkFactor    = shrinkFactor / 4;
+            radius          = radius * 3 / 2;
             break;
         default:
     }
 })
 
 ipcMain.on('get-difficulty', function(event){
-    event.returnValue = { shrinkFactor: shrinkFactor, targetSpawnRate: targetSpawnRate};
+    event.returnValue = { shrinkFactor:     shrinkFactor,
+                          targetSpawnRate:  targetSpawnRate,
+                          radius:           radius
+                        };
 })
 
 ipcMain.on('quit', function(event){

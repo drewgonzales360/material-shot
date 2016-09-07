@@ -38,7 +38,7 @@ function createWindow () {
   mainWindow.loadURL(`file://${__dirname}/app/menu.html`)
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -81,54 +81,71 @@ summary
 var shrinkFactor    = 150;
 var targetSpawnRate = 2000;
 var radius          = 100;
+var highScores      = {};
+var diffCode        = "easy-accuracy";
 ipcMain.on('game-settings', function(event, difficulty, type){
-    console.log("Difficult: " + difficulty + ", Type: " + type + "Radius: " + radius);
-    switch (difficulty) {
-        case "easy":
-            shrinkFactor    = 150;
-            targetSpawnRate = 2000;
-            radius          = 100;
-            break;
-        case "medium":
-            shrinkFactor    = 100;
-            targetSpawnRate = 1000;
-            radius          = 80
-            break;
-        case "hard":
-            shrinkFactor    = 75;
-            targetSpawnRate = 750;
-            radius          = 70;
-            break;
-        case "harder":
-            shrinkFactor    = 50;
-            targetSpawnRate = 300;
-            radius          = 50;
-            break;
-        default:
-            shrinkFactor = 150;
-            targetSpawnRate = 2000;
-    }
+  console.log("Difficult: " + difficulty + ", Type: " + type + "Radius: " + radius);
+  diffCode = difficulty + "-" + type;
+  console.log(diffCode);
+  switch (difficulty) {
+    case "easy":
+      shrinkFactor    = 150;
+      targetSpawnRate = 2000;
+      radius          = 70;
+      break;
+    case "medium":
+      shrinkFactor    = 100;
+      targetSpawnRate = 1500;
+      radius          = 80
+      break;
+    case "hard":
+      shrinkFactor    = 75;
+      targetSpawnRate = 800;
+      radius          = 50;
+      break;
+    case "harder":
+      shrinkFactor    = 60;
+      targetSpawnRate = 500;
+      radius          = 50;
+      break;
+    default:
+      shrinkFactor = 150;
+      targetSpawnRate = 2000;
+  }
 
-    switch (type) {
-        case "accuracy":
-            shrinkFactor    = shrinkFactor * 2;
-            radius          = radius / 2;
-            break;
-        case "reflex":
-            shrinkFactor    = shrinkFactor / 4;
-            radius          = radius * 3 / 2;
-            break;
-        default:
-    }
+  switch (type) {
+    case "accuracy":
+      shrinkFactor    = shrinkFactor * 2;
+      radius          = radius / 4;
+      break;
+    case "reflex":
+      shrinkFactor    = shrinkFactor / 10;
+      radius          = radius * 3 / 2;
+      break;
+    default:
+      shrinkFactor    = shrinkFactor * 2;
+      radius          = radius / 4;
+      break;
+  }
 })
 
 ipcMain.on('get-difficulty', function(event){
-    event.returnValue = { shrinkFactor:     shrinkFactor,
-                          targetSpawnRate:  targetSpawnRate,
-                          radius:           radius
-                        };
+  if( !(diffCode in highScores)){
+    highScores[diffCode] = 0;
+  }
+  event.returnValue = { shrinkFactor:     shrinkFactor,
+                        targetSpawnRate:  targetSpawnRate,
+                        radius:           radius,
+                        diffCode:         diffCode,
+                        highScore:        highScores[diffCode]
+                      };
 })
 
 ipcMain.on('quit', function(event){
-    app.quit();
+  app.quit();
 })
+
+ipcMain.on('save-score', function(event, diffCode, score){
+  highScores[diffCode.toString()] = score;
+  console.log("High score for " + diffCode.toString() + " is " + highScores[diffCode] + ".");
+});

@@ -23,29 +23,29 @@ getHard
   settings to the main process.
 ****************************************************************/
 function getHard() {
-    var diffRadio = document.getElementsByName('group1');
-    let difficulty = "easy"; // default difficulty.
-    var typeRadio = document.getElementsByName('game-type');
-    let gameType = "easy"; // default gameType.
-    for (var i = 0, length = diffRadio.length; i < length; i++) {
-        if (diffRadio[i].checked) {
-            difficulty = diffRadio[i].value;
-            console.log("Difficulty set to " + difficulty);
-            console.assert(typeof difficulty === "string")
-            break;
-        }
+  var diffRadio = document.getElementsByName('group1');
+  let difficulty = "easy"; // default difficulty.
+  var typeRadio = document.getElementsByName('game-type');
+  let gameType = "easy"; // default gameType.
+  for (var i = 0, length = diffRadio.length; i < length; i++) {
+    if (diffRadio[i].checked) {
+      difficulty = diffRadio[i].value;
+      console.log("Difficulty set to " + difficulty);
+      console.assert(typeof difficulty === "string")
+      break;
     }
-    for (var i = 0, length = typeRadio.length; i < length; i++) {
-        if (typeRadio[i].checked) {
-            // do whatever you want with the checked radio
-            gameType = typeRadio[i].value;
-            console.log("GameType set to " + gameType);
-            console.assert(typeof gameType === "string")
-            // only one radio can be logically checked, don't check the rest
-            break;
-        }
+  }
+  for (var i = 0, length = typeRadio.length; i < length; i++) {
+    if (typeRadio[i].checked) {
+      // do whatever you want with the checked radio
+      gameType = typeRadio[i].value;
+      console.log("GameType set to " + gameType);
+      console.assert(typeof gameType === "string")
+      // only one radio can be logically checked, don't check the rest
+      break;
     }
-    ipcRenderer.send('game-settings', difficulty, gameType);
+  }
+  ipcRenderer.send('game-settings', difficulty, gameType);
 }
 
 document.getElementById('start').addEventListener('click', function(){

@@ -3,6 +3,8 @@
 This game just helps a user test his accurace with a mouse. It's a pretty
 simple game that doesn't need much explanation. Simply move your mouse around
 and click the yellow targets when they appear.
+![alt tag](https://cloud.githubusercontent.com/assets/6912711/21553217/054b1884-cdbc-11e6-886e-326115a01b8f.png)
+![alt tag](https://cloud.githubusercontent.com/assets/6912711/21553216/0487e71a-cdbc-11e6-9186-9a402ddeb0b2.png)
 
 ## Installation
 
